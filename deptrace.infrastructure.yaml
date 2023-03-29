@@ -1,0 +1,22 @@
+paths:
+  - ./src/Infrastructure
+exclude_files:
+  - "#.*Test.*#"
+layers:
+  ##############################
+  #   SYMFONY
+  ##############################
+  - name: Symfony
+    collectors:
+      - type: className
+        regex: ^Symfony\\.*
+
+  ##############################
+  #   DOCTRINE
+  ##############################
+  - name: Doctrine
+    collectors:
+      - type: className
+        regex: ^Doctrine\\.*
+
+ruleset:

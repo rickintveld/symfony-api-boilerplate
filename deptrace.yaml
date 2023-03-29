@@ -1,0 +1,4 @@
+imports:
+  - deptrace.layers.yaml
+  - deptrace.application.yaml
+  - deptrace.infrastructure.yaml
