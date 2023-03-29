@@ -22,6 +22,6 @@
 ###< squizlabs/php_codesniffer ###
 
 ###> docker ###
-./docker/database/data/*
-./docker/logs/nginx/*
+docker/database/data/*
+docker/logs/nginx/*
 ###< docker ###
