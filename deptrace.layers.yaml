@@ -8,24 +8,24 @@ layers:
   ##############################
   - name: Application
     collectors:
-      - type: className
-        regex: ^App\\Application\\.*
+      - type: directory
+        regex: src/Application/*
 
   ##############################
   #   DOMAIN
   ##############################
   - name: Domain
     collectors:
-      - type: className
-        regex: ^App\\Domain\\.*
+      - type: directory
+        regex: src/Domain/*
 
   ##############################
   #   INFRASTRUCTURE
   ##############################
   - name: Infrastructure
     collectors:
-      - type: className
-        regex: ^App\\Infrastructure\\.*
+      - type: directory
+        regex: src/Infrastructure/*
 
   ##############################
   #   SYMFONY
