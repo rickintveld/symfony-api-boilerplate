@@ -3,7 +3,7 @@
 namespace App\RequestHandler;
 
 use App\Entity\User;
-use App\Repository\UserRepositoryInterface;
+use App\Repository\UserRepository;
 use App\RequestHandler\RequestHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class CreateUserRequestHandler implements RequestHandlerInterface
 {
     public function __construct(
-        private readonly UserRepositoryInterface $userRepository,
+        private readonly UserRepository $userRepository,
         private readonly SerializerInterface $objectSerializer
     ) {
     }

@@ -3,11 +3,11 @@
 namespace App\Service;
 
 use App\Entity\User;
-use App\Repository\UserRepositoryInterface;
+use App\Repository\UserRepository;
 
 class UserService
 {
-    public function __construct(private readonly UserRepositoryInterface $userRepository)
+    public function __construct(private readonly UserRepository $userRepository)
     {
     }
 

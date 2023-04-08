@@ -2,27 +2,25 @@
 
 namespace App\RequestHandler;
 
-use App\Entity\User;
-use App\Repository\UserRepositoryInterface;
+use App\Model\Identifier;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class DisableUserRequestHandler implements RequestHandlerInterface
 {
-    public function __construct(private readonly UserRepositoryInterface $userRepository)
-    {
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly SerializerInterface $objectSerializer
+    ) {
     }
 
     public function handle(Request $request): void
     {
-        /** @psalm-suppress MixedAssignment */
-        $data = json_decode($request->getContent(), true);
+        /** @var Identifier $identifier */
+        $identifier = $this->objectSerializer->deserialize($request->getContent(), Identifier::class, 'json');
 
-        if (!isset($data['id'])) {
-            throw new \Exception('Identifier not found');
-        }
-
-        /** @psalm-suppress MixedArrayAccess */
-        $user = $this->userRepository->findById((int) $data['id']);
+        $user = $this->userRepository->findById($identifier->getId());
 
         $user->disable();
 
