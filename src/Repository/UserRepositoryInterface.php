@@ -21,12 +21,6 @@ interface UserRepositoryInterface
     public function findById(int $id): User;
 
     /**
-     * @return User[]
-     * @throws NoResultException
-     */
-    public function findBy(array $criteria, ?array $orderBy = null, int $limit = null, int $offset = null): array;
-
-    /**
      * @throws EntityNotFoundException
      */
     public function update(User $user): void;
