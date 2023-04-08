@@ -1,0 +1,68 @@
+deptrac:
+  paths:
+    - ./src
+  exclude_files:
+    - "#.*Test.*#"
+  layers:
+    ##############################
+    #   CONTROLLER
+    ##############################
+    - name: Controller
+      collectors:
+        - type: className
+          regex: ^App\\Controller\\.*
+
+    ##############################
+    #   REPOSITORY
+    ##############################
+    - name: Repository
+      collectors:
+        - type: className
+          regex: ^App\\Repository\\.*
+
+    ##############################
+    #   REQUEST HANDLER
+    ##############################
+    - name: RequestHandler
+      collectors:
+        - type: className
+          regex: ^App\\RequestHandler\\.*
+
+    ##############################
+    #   SERVICE
+    ##############################
+    - name: Service
+      collectors:
+        - type: className
+          regex: ^App\\Service\\.*
+
+    ##############################
+    #   SYMFONY
+    ##############################
+    - name: Symfony
+      collectors:
+        - type: className
+          regex: ^Symfony\\.*
+
+    ##############################
+    #   DOCTRINE
+    ##############################
+    - name: Doctrine
+      collectors:
+        - type: className
+          regex: ^Doctrine\\.*
+
+  ruleset:
+    Controller:
+      - Symfony
+      - Service
+      - RequestHandler
+    Repository:
+      - Doctrine
+      - Symfony
+    RequestHandler:
+      - Repository
+      - Symfony
+    Service:
+      - Repository
+      - Symfony

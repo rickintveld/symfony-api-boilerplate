@@ -17,8 +17,23 @@ services:
     resource: "../src/"
     exclude:
       - "../src/DependencyInjection/"
-      - "../src/Infrastructure/Entity/"
+      - "../src/Entity/"
       - "../src/Kernel.php"
 
-  # add more service definitions when explicit configuration is needed
-  # please note that last definitions always *replace* previous ones
+  # RequestHandlers
+  App\RequestHandler\CreateUserRequestHandler: ~
+  App\RequestHandler\DisableUserRequestHandler: ~
+  App\RequestHandler\EnableUserRequestHandler: ~
+  App\RequestHandler\RemoveUserRequestHandler: ~
+
+  # RequestHandler interface parameter binding
+  App\RequestHandler\RequestHandlerInterface $createUserRequestHandler: '@App\RequestHandler\CreateUserRequestHandler'
+  App\RequestHandler\RequestHandlerInterface $disableUserRequestHandler: '@App\RequestHandler\DisableUserRequestHandler'
+  App\RequestHandler\RequestHandlerInterface $enableUserRequestHandler: '@App\RequestHandler\EnableUserRequestHandler'
+  App\RequestHandler\RequestHandlerInterface $removeUserRequestHandler: '@App\RequestHandler\RemoveUserRequestHandler'
+
+  # Serializer
+  App\Serializer\ObjectSerializer: ~
+
+  # Serializer interface parameter binding
+  Symfony\Component\Serializer\SerializerInterface $objectSerializer: '@App\Serializer\ObjectSerializer'

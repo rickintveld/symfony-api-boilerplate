@@ -1,4 +1,4 @@
-version: "3.6"
+version: "3"
 
 services:
   database:
@@ -17,13 +17,13 @@ services:
 
   php-fpm:
     build:
-      context: ./docker/php-fpm
+      context: ./php-fpm
     depends_on:
       - database
     environment:
       - APP_ENV=${APP_ENV}
       - APP_SECRET=${APP_SECRET}
-      - DATABASE_URL=mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@database:3306/${DATABASE_NAME}?serverVersion=5.7
+      - DATABASE_URL=mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@database:3306/${DATABASE_NAME}?serverVersion=mariadb-10.4.21
     volumes:
       - ./:/var/www
 
@@ -40,22 +40,4 @@ services:
       - php-fpm
     ports:
       - "80:80"
-
-###> doctrine/doctrine-bundle ###
-  database:
-    image: postgres:${POSTGRES_VERSION:-15}-alpine
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
-    volumes:
-      - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
-
-volumes:
-###> doctrine/doctrine-bundle ###
-  database_data:
-###< doctrine/doctrine-bundle ###
+      - "443:443"
