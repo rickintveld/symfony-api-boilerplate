@@ -8,6 +8,9 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class UserRepository extends ServiceEntityRepository
 {
+    private const DISABLED = 0;
+    private const ENABLED = 1;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
@@ -15,7 +18,7 @@ class UserRepository extends ServiceEntityRepository
 
     public function findAll(): array
     {
-        return $this->getEntityManager()->getRepository(User::class)->findBy(['enabled' => true]);
+        return $this->getEntityManager()->getRepository(User::class)->findBy(['enabled' => self::ENABLED]);
     }
 
     public function findById(int $id): User

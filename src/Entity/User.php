@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use DateTime;
+use DateTimeImmutable;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
@@ -9,10 +11,12 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use App\Repository\UserRepository;
-use App\Entity\LifeCycleTrait;
+use App\Entity\LifeCycle;
 use App\Model\Identifier;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(types: ['https://schema.org/User'], operations: [
     new GetCollection(name: 'app_users', uriTemplate: '/user/all', outputFormats: ['json']),
@@ -43,28 +47,46 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
 {
-    use LifeCycleTrait;
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['presentation'])]
     private ?int $id = null;
 
     #[Assert\NotBlank]
     #[ORM\Column(length: 50)]
+    #[Groups(['presentation'])]
     private ?string $firstName = null;
 
     #[Assert\NotBlank]
     #[ORM\Column(length: 100)]
+    #[Groups(['presentation'])]
     private ?string $lastName = null;
 
     #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
+    #[Groups(['presentation'])]
     private ?string $email = null;
 
     #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
+    #[Groups(['presentation'])]
     private ?string $password = null;
+
+    #[ORM\Column]
+    #[Groups(['presentation'])]
+    private ?bool $enabled = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $created = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $updated = null;
+
+    public function __constructor()
+    {
+        $this->created = new DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -117,5 +139,48 @@ class User
         $this->password = $password;
 
         return $this;
+    }
+
+    public function isEnabled(): ?bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function disable(): void
+    {
+        $this->enabled = false;
+    }
+
+    public function enable(): void
+    {
+        $this->enabled = true;
+    }
+
+    public function setCreated(): void
+    {
+        $this->created = new \DateTimeImmutable();
+    }
+
+    public function getCreated(): ?\DateTimeInterface
+    {
+        return $this->created;
+    }
+
+    public function getUpdated(): ?\DateTimeInterface
+    {
+        return $this->updated;
+    }
+
+    #[ORM\PostPersist]
+    public function setUpdated(): void
+    {
+        $this->updated = new DateTime();
     }
 }

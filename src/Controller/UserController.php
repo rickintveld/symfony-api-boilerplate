@@ -19,14 +19,14 @@ class UserController extends AbstractController
     public function all(SerializerInterface $objectSerializer, UserService $userService): JsonResponse
     {
         return $this->json([
-            'users' => $objectSerializer->serialize($userService->findAll(), 'json')
+            'users' => $objectSerializer->serialize($userService->findAll(), 'json', ['presentation'])
         ], Response::HTTP_OK);
     }
 
     #[Route('/user/{id}', name: 'app_user', methods: 'GET')]
     public function fetch(User $user, SerializerInterface $objectSerializer): JsonResponse
     {
-        return $this->json(['user' => $objectSerializer->serialize($user, 'json')], Response::HTTP_OK);
+        return $this->json(['user' => $objectSerializer->serialize($user, 'json', ['presentation'])], Response::HTTP_OK);
     }
 
     #[Route('/user/disable', name: 'app_user_disable', methods: 'PATCH')]
