@@ -13,46 +13,18 @@ docker-compose run php-fpm composer install
 docker-compose run php-fpm bin/console doctrine:migration:migrate
 ```
 
-# LifeCycles
-
-### GET
+# Request cycles
 
 ```mermaid
   flowchart LR
-    A[GET] -->|route| B(controller)
-    B --> C{Service}
-    C -->|success| D[JSON]
-    C -->|fail| E[JSON]
-```
-
-### POST
-
-```mermaid
-  flowchart LR
-    A[POST] -->|route| B(controller)
-    B --> C{RequestHandler}
-    C -->|success| D[JSON]
-    C -->|fail| E[JSON]
-```
-
-### PATCH
-
-```mermaid
-  flowchart LR
-    A[PATCH] -->|route| B(controller)
-    B --> C{RequestHandler}
-    C -->|success| D[JSON]
-    C -->|fail| E[JSON]
-```
-
-### DELETE
-
-```mermaid
-  flowchart LR
-    A[DELETE] -->|route| B(controller)
-    B --> C{Service}
-    C -->|success| D[JSON]
-    C -->|fail| E[JSON]
+    A[Request] --> B{Controller}
+    B -->|POST| C[RequestHandler]
+    B -->|GET| D[Service]
+    B -->|PATCH| C[RequestHandler]
+    B -->|PUT| C[RequestHandler]
+    B -->|DELETE| D[Service]
+    C -->|Serializer| E[Repository]
+    D -->|onSuccess| E[Repository]
 ```
 
 # DEPTRAC
