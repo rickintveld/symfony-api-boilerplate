@@ -57,17 +57,23 @@ docker-compose run php-fpm bin/console doctrine:migration:migrate
 
 # DEPTRAC
 
+Deptrac is a static code analysis tool for PHP that helps you communicate, visualize and enforce architectural decisions in your projects. You can freely define your architectural layers over classes and which rules should apply to them.
+
 ```bash
 docker-compose run php-fpm ./vendor/bin/deptrac
 ```
 
 # PSALM
 
+Psalm is a static analysis tool for finding errors in PHP applications.
+
 ```bash
 docker-compose run php-fpm ./vendor/bin/psalm
 ```
 
 # PHP-CS
+
+The PHP Coding Standards Fixer (PHP CS Fixer) tool fixes your code to follow standards
 
 ```bash
 docker-compose run php-fpm ./vendor/bin/phpcs ./src
