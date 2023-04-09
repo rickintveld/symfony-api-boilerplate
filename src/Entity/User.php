@@ -2,10 +2,26 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use App\Repository\UserRepository;
 use App\Entity\LifeCycleTrait;
+use App\Model\Identifier;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
+#[ApiResource(types: ['https://schema.org/User'], operations: [
+    new GetCollection(name: 'app_users', uriTemplate: '/user/all', outputFormats: ['json']),
+    new Get(name: 'app_user', uriTemplate: '/user/{id}', outputFormats: ['json']),
+    new Post(name: 'app_user_create', uriTemplate: '/user/create', inputFormats: ['json'], outputFormats: ['json']),
+    new Patch(name: 'app_user_enable', uriTemplate: '/user/enable', input: Identifier::class, inputFormats: ['json'], outputFormats: ['json']),
+    new Patch(name: 'app_user_disable', uriTemplate: '/user/disable', input: Identifier::class, inputFormats: ['json'], outputFormats: ['json']),
+    new Delete(name: 'app_user_remove', uriTemplate: '/user/remove/{id}'),
+])]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
@@ -17,15 +33,19 @@ class User
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank]
     #[ORM\Column(length: 50)]
     private ?string $firstName = null;
 
+    #[Assert\NotBlank]
     #[ORM\Column(length: 100)]
     private ?string $lastName = null;
 
+    #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
+    #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 

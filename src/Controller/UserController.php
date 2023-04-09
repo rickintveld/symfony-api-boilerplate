@@ -31,7 +31,7 @@ class UserController extends AbstractController
         return $this->json(['user' => $objectSerializer->serialize($user, 'json')], Response::HTTP_OK);
     }
 
-    #[Route('/user/disable', name: 'app_user_disable', methods: 'PUT')]
+    #[Route('/user/disable', name: 'app_user_disable', methods: 'PATCH')]
     public function disable(Request $request, RequestHandlerInterface $disableUserRequestHandler): JsonResponse
     {
         try {
@@ -43,7 +43,7 @@ class UserController extends AbstractController
         return $this->json(['message' => 'User is disabled!'], Response::HTTP_OK);
     }
 
-    #[Route('/user/enable', name: 'app_user_enable', methods: 'PUT')]
+    #[Route('/user/enable', name: 'app_user_enable', methods: 'PATCH')]
     public function enable(Request $request, RequestHandlerInterface $enableUserRequestHandler): JsonResponse
     {
         try {
@@ -55,16 +55,12 @@ class UserController extends AbstractController
         return $this->json(['message' => 'User is enabled!'], Response::HTTP_OK);
     }
 
-    #[Route('/user/remove', name: 'app_user_remove', methods: 'DELETE')]
-    public function remove(Request $request, RequestHandlerInterface $removeUserRequestHandler): JsonResponse
+    #[Route('/user/remove/{id}', name: 'app_user_remove', methods: 'DELETE')]
+    public function remove(User $user): JsonResponse
     {
-        try {
-            $removeUserRequestHandler->handle($request);
-        } catch (\Exception $e) {
-            return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
-        }
+        $this->userService->remove($user);
 
-        return $this->json(['message' => 'User is removed!'], Response::HTTP_OK);
+        return $this->json(['message' => 'User is removed!'], Response::HTTP_NO_CONTENT);
     }
 
     #[Route('/users/create', name: 'app_user_create', methods: 'POST')]

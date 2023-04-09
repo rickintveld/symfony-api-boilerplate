@@ -24,13 +24,11 @@ services:
   App\RequestHandler\CreateUserRequestHandler: ~
   App\RequestHandler\DisableUserRequestHandler: ~
   App\RequestHandler\EnableUserRequestHandler: ~
-  App\RequestHandler\RemoveUserRequestHandler: ~
 
   # RequestHandler interface parameter binding
   App\RequestHandler\RequestHandlerInterface $createUserRequestHandler: '@App\RequestHandler\CreateUserRequestHandler'
   App\RequestHandler\RequestHandlerInterface $disableUserRequestHandler: '@App\RequestHandler\DisableUserRequestHandler'
   App\RequestHandler\RequestHandlerInterface $enableUserRequestHandler: '@App\RequestHandler\EnableUserRequestHandler'
-  App\RequestHandler\RequestHandlerInterface $removeUserRequestHandler: '@App\RequestHandler\RemoveUserRequestHandler'
 
   # Serializer
   App\Serializer\ObjectSerializer: ~

@@ -18,8 +18,10 @@ class CreateUserRequestHandler implements RequestHandlerInterface
 
     public function handle(Request $request): void
     {
-        /** @param User $user */
+        /** @var User $user */
         $user = $this->objectSerializer->deserialize($request->getContent(), User::class, 'json');
+
+        $user->disable();
 
         $this->userRepository->store($user);
     }
