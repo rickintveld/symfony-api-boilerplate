@@ -15,15 +15,11 @@ use Symfony\Component\Serializer\SerializerInterface;
 /** @psalm-suppress PropertyNotSetInConstructor */
 class UserController extends AbstractController
 {
-    public function __construct(private readonly UserService $userService)
-    {
-    }
-
     #[Route('/user/all', name: 'app_users', methods: 'GET')]
-    public function all(SerializerInterface $objectSerializer): JsonResponse
+    public function all(SerializerInterface $objectSerializer, UserService $userService): JsonResponse
     {
         return $this->json([
-            'users' => $objectSerializer->serialize($this->userService->findAll(), 'json')
+            'users' => $objectSerializer->serialize($userService->findAll(), 'json')
         ], Response::HTTP_OK);
     }
 
@@ -58,9 +54,9 @@ class UserController extends AbstractController
     }
 
     #[Route('/user/remove/{id}', name: 'app_user_remove', methods: 'DELETE')]
-    public function remove(User $user): JsonResponse
+    public function remove(User $user, UserService $userService): JsonResponse
     {
-        $this->userService->remove($user);
+        $userService->remove($user);
 
         return $this->json(['message' => 'User is removed!'], Response::HTTP_NO_CONTENT);
     }
