@@ -55,6 +55,12 @@ docker-compose run php-fpm bin/console doctrine:migration:migrate
     C -->|fail| E[JSON]
 ```
 
+# DEPTRAC
+
+```bash
+docker-compose run php-fpm ./vendor/bin/deptrac
+```
+
 # PSALM
 
 ```bash
@@ -84,7 +90,7 @@ docker-compose run php-fpm bin/console --env=test doctrine:schema:create
 ### Insert Fixtures
 
 ```bash
-docker-compose run php-fpm bin/console --env=test doctrine:fixtures:load --purge-with-truncate
+docker-compose run php-fpm bin/console --env=test doctrine:fixtures:load
 ```
 
 ### Run tests
