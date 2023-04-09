@@ -5,7 +5,6 @@ namespace App\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
-
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class ObjectSerializer implements SerializerInterface

@@ -17,9 +17,26 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(types: ['https://schema.org/User'], operations: [
     new GetCollection(name: 'app_users', uriTemplate: '/user/all', outputFormats: ['json']),
     new Get(name: 'app_user', uriTemplate: '/user/{id}', outputFormats: ['json']),
-    new Post(name: 'app_user_create', uriTemplate: '/user/create', inputFormats: ['json'], outputFormats: ['json']),
-    new Patch(name: 'app_user_enable', uriTemplate: '/user/enable', input: Identifier::class, inputFormats: ['json'], outputFormats: ['json']),
-    new Patch(name: 'app_user_disable', uriTemplate: '/user/disable', input: Identifier::class, inputFormats: ['json'], outputFormats: ['json']),
+    new Post(
+        name: 'app_user_create',
+        uriTemplate: '/user/create',
+        inputFormats: ['json'],
+        outputFormats: ['json']
+    ),
+    new Patch(
+        name: 'app_user_enable',
+        uriTemplate: '/user/enable',
+        input: Identifier::class,
+        inputFormats: ['json'],
+        outputFormats: ['json']
+    ),
+    new Patch(
+        name: 'app_user_disable',
+        uriTemplate: '/user/disable',
+        input: Identifier::class,
+        inputFormats: ['json'],
+        outputFormats: ['json']
+    ),
     new Delete(name: 'app_user_remove', uriTemplate: '/user/remove/{id}'),
 ])]
 #[ORM\HasLifecycleCallbacks]

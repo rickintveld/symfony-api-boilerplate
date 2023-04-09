@@ -22,7 +22,9 @@ class UserController extends AbstractController
     #[Route('/user/all', name: 'app_users', methods: 'GET')]
     public function all(SerializerInterface $objectSerializer): JsonResponse
     {
-        return $this->json(['users' => $objectSerializer->serialize($this->userService->findAll(), 'json')], Response::HTTP_OK);
+        return $this->json([
+            'users' => $objectSerializer->serialize($this->userService->findAll(), 'json')
+        ], Response::HTTP_OK);
     }
 
     #[Route('/user/{id}', name: 'app_user', methods: 'GET')]

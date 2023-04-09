@@ -17,7 +17,6 @@ class DisableUserRequestHandler implements RequestHandlerInterface
 
     public function handle(Request $request): void
     {
-        /** @var Identifier $identifier */
         $identifier = $this->objectSerializer->deserialize($request->getContent(), Identifier::class, 'json');
 
         $user = $this->userRepository->findById($identifier->getId());
