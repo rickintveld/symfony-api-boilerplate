@@ -18,41 +18,41 @@ docker-compose run php-fpm bin/console doctrine:migration:migrate
 ### GET
 
 ```mermaid
-  graph TD;
-      A-->B;
-      A-->C;
-      B-->D;
-      C-->D;
+  flowchart LR
+    A[GET] -->|route| B(controller)
+    B --> C{Service}
+    C -->|success| D[JSON]
+    C -->|fail| E[JSON]
 ```
 
 ### POST
 
 ```mermaid
-  graph TD;
-      A-->B;
-      A-->C;
-      B-->D;
-      C-->D;
+  flowchart LR
+    A[GET] -->|route| B(controller)
+    B --> C{RequestHandler}
+    C -->|success| D[JSON]
+    C -->|fail| E[JSON]
 ```
 
 ### PATCH
 
 ```mermaid
-  graph TD;
-      A-->B;
-      A-->C;
-      B-->D;
-      C-->D;
+  flowchart LR
+    A[GET] -->|route| B(controller)
+    B --> C{RequestHandler}
+    C -->|success| D[JSON]
+    C -->|fail| E[JSON]
 ```
 
 ### DELETE
 
 ```mermaid
-  graph TD;
-      A-->B;
-      A-->C;
-      B-->D;
-      C-->D;
+  flowchart LR
+    A[GET] -->|route| B(controller)
+    B --> C{Service}
+    C -->|success| D[JSON]
+    C -->|fail| E[JSON]
 ```
 
 # Tests
