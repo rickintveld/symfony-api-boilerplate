@@ -29,7 +29,7 @@ docker-compose run php-fpm bin/console doctrine:migration:migrate
 
 ```mermaid
   flowchart LR
-    A[GET] -->|route| B(controller)
+    A[POST] -->|route| B(controller)
     B --> C{RequestHandler}
     C -->|success| D[JSON]
     C -->|fail| E[JSON]
@@ -39,7 +39,7 @@ docker-compose run php-fpm bin/console doctrine:migration:migrate
 
 ```mermaid
   flowchart LR
-    A[GET] -->|route| B(controller)
+    A[PATCH] -->|route| B(controller)
     B --> C{RequestHandler}
     C -->|success| D[JSON]
     C -->|fail| E[JSON]
@@ -49,7 +49,7 @@ docker-compose run php-fpm bin/console doctrine:migration:migrate
 
 ```mermaid
   flowchart LR
-    A[GET] -->|route| B(controller)
+    A[DELETE] -->|route| B(controller)
     B --> C{Service}
     C -->|success| D[JSON]
     C -->|fail| E[JSON]
