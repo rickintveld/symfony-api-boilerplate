@@ -55,6 +55,18 @@ docker-compose run php-fpm bin/console doctrine:migration:migrate
     C -->|fail| E[JSON]
 ```
 
+# PSALM
+
+```bash
+docker-compose run php-fpm ./vendor/bin/psalm
+```
+
+# PHP-CS
+
+```bash
+docker-compose run php-fpm ./vendor/bin/phpcs ./src
+```
+
 # Tests
 
 ### Create tests database
