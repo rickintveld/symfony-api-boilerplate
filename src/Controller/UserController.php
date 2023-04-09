@@ -65,7 +65,7 @@ class UserController extends AbstractController
         return $this->json(['message' => 'User is removed!'], Response::HTTP_NO_CONTENT);
     }
 
-    #[Route('/users/create', name: 'app_user_create', methods: 'POST')]
+    #[Route('/user/create', name: 'app_user_create', methods: 'POST')]
     public function create(Request $request, RequestHandlerInterface $createUserRequestHandler): JsonResponse
     {
         try {

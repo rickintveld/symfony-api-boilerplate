@@ -45,6 +45,11 @@ trait LifeCycleTrait
         $this->enabled = true;
     }
 
+    public function setCreated(): void
+    {
+        $this->created = new \DateTimeImmutable();
+    }
+
     public function getCreated(): ?\DateTimeInterface
     {
         return $this->created;
