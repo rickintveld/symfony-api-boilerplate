@@ -74,3 +74,9 @@ docker-compose run php-fpm bin/console --env=test doctrine:schema:create
 ```bash
 docker-compose run php-fpm bin/console --env=test doctrine:fixtures:load --purge-with-truncate
 ```
+
+### Run tests
+
+```bash
+docker-compose run php-fpm bin/phpunit
+```
