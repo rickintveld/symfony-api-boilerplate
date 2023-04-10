@@ -153,16 +153,6 @@ class User
         return $this;
     }
 
-    public function disable(): void
-    {
-        $this->enabled = false;
-    }
-
-    public function enable(): void
-    {
-        $this->enabled = true;
-    }
-
     public function setCreated(): void
     {
         $this->created = new \DateTimeImmutable();
@@ -182,5 +172,20 @@ class User
     public function setUpdated(): void
     {
         $this->updated = new DateTime();
+    }
+
+    public function disable(): void
+    {
+        $this->enabled = false;
+    }
+
+    public function enable(): void
+    {
+        $this->enabled = true;
+    }
+
+    public function fullName(): string
+    {
+        return implode(' ', [$this->getFirstName(), $this->getLastName()]);
     }
 }

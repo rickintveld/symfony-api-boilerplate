@@ -3,14 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Enum\State;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 class UserRepository extends ServiceEntityRepository
 {
-    private const DISABLED = 0;
-    private const ENABLED = 1;
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
@@ -18,7 +16,7 @@ class UserRepository extends ServiceEntityRepository
 
     public function findAll(): array
     {
-        return $this->getEntityManager()->getRepository(User::class)->findBy(['enabled' => self::ENABLED]);
+        return $this->getEntityManager()->getRepository(User::class)->findBy(['enabled' => State::ENABLED]);
     }
 
     public function findById(int $id): User
