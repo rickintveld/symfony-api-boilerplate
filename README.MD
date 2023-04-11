@@ -1,3 +1,5 @@
+[![Actions Status](https://github.com/rickintveld/symfony-api-boilerplate/workflows/CI/badge.svg)](https://github.com/rickintveld/symfony-api-boilerplate/actions)
+
 # Start up
 
 ### First installation
