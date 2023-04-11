@@ -8,4 +8,9 @@ jobs:
       - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
       - uses: php-actions/composer@v6
       - run: echo "Composer dependencies have been installed"
-      - run: vendor/bin/phpunit
+      - run: vendor/bin/deptrac
+      - run: vendor/bin/psalm
+      - run: vendor/bin/phpcs ./src
+      - run: bin/console --env=test doctrine:database:create
+      - run: bin/console --env=test doctrine:schema:create
+      - run: bin/phpunit
