@@ -1,13 +1,26 @@
+# Symfony API Boilerplate
+
 [![Actions Status](https://github.com/rickintveld/symfony-api-boilerplate/workflows/CI/badge.svg)](https://github.com/rickintveld/symfony-api-boilerplate/actions)
 
-# Start up
-
-### First installation
+## Configuration
 
 - Configure your `env.local`
-- Start the docker instance `docker-compose up -d`
+
+```env
+DATABASE_NAME=api
+DATABASE_USER=root
+DATABASE_PASSWORD=root
+DATABASE_ROOT_PASSWORD=root
+
+DATABASE_URL=mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@database:3306/${DATABASE_NAME}?serverVersion=mariadb-10.4.21
+```
+
+## Installation
 
 ```bash
+// Start the docker instance
+docker-compose up -d
+
 // Run the composer install
 docker-compose run php-fpm composer install
 
@@ -15,7 +28,7 @@ docker-compose run php-fpm composer install
 docker-compose run php-fpm bin/console doctrine:migration:migrate
 ```
 
-# Request cycles
+## Request cycles
 
 ```mermaid
   flowchart LR
@@ -29,7 +42,7 @@ docker-compose run php-fpm bin/console doctrine:migration:migrate
     D -->|onSuccess| E[Repository]
 ```
 
-# DEPTRAC
+## Deptrac
 
 Deptrac is a static code analysis tool for PHP that helps you communicate, visualize and enforce architectural decisions in your projects. You can freely define your architectural layers over classes and which rules should apply to them.
 
@@ -37,7 +50,7 @@ Deptrac is a static code analysis tool for PHP that helps you communicate, visua
 docker-compose run php-fpm ./vendor/bin/deptrac
 ```
 
-# PSALM
+## Psalm
 
 Psalm is a static analysis tool for finding errors in PHP applications.
 
@@ -45,7 +58,7 @@ Psalm is a static analysis tool for finding errors in PHP applications.
 docker-compose run php-fpm ./vendor/bin/psalm
 ```
 
-# PHP-CS
+## Php-cs
 
 The PHP Coding Standards Fixer (PHP CS Fixer) tool fixes your code to follow standards
 
@@ -55,19 +68,19 @@ docker-compose run php-fpm ./vendor/bin/phpcs ./src
 
 # Tests
 
-### Create tests database
+## Create tests database
 
 ```bash
 docker-compose run php-fpm bin/console --env=test doctrine:database:create
 ```
 
-### Create the test tables / columns
+## Create the test tables / columns
 
 ```bash
 docker-compose run php-fpm bin/console --env=test doctrine:schema:create
 ```
 
-### Run tests
+## Run tests
 
 ```bash
 docker-compose run php-fpm bin/phpunit
