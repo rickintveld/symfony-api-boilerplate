@@ -5,12 +5,15 @@ namespace App\Tests\Functional\Controller;
 use DateTime;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Query\QueryBuilder;
 
 class UserControllerTest extends ApiTestCase
 {
     private Connection $connection;
+    private EntityManagerInterface $entityManager;
     private string $tableName;
 
     private const TEST_USER_ID = 1;
@@ -29,9 +32,9 @@ class UserControllerTest extends ApiTestCase
         parent::setUp();
 
         /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
-        $this->tableName = $entityManager->getClassMetadata(User::class)->getTableName();
-        $this->connection = $entityManager->getConnection();
+        $this->entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+        $this->tableName = $this->entityManager->getClassMetadata(User::class)->getTableName();
+        $this->connection = $this->entityManager->getConnection();
     }
 
     public function tearDown(): void
@@ -39,12 +42,12 @@ class UserControllerTest extends ApiTestCase
         parent::tearDown();
 
         $this->connection->close();
-        unset($this->connection, $this->tableName);
+        unset($this->connection, $this->entityManager, $this->tableName);
     }
 
     public function testFetchAllUsers(): void
     {
-        $this->reloadDatabase();
+        $this->prepareDatabaseData();
 
         static::createClient()->request('GET', '/user/all');
 
@@ -57,7 +60,7 @@ class UserControllerTest extends ApiTestCase
 
     public function testFetchOneUser(): void
     {
-        $this->reloadDatabase();
+        $this->prepareDatabaseData();
 
         static::createClient()->request('GET', '/user/' . self::TEST_USER_ID);
 
@@ -70,7 +73,7 @@ class UserControllerTest extends ApiTestCase
 
     public function testDisableUser(): void
     {
-        $this->reloadDatabase();
+        $this->prepareDatabaseData();
 
         static::createClient()->request('PATCH', '/user/disable', ['body' => json_encode(['id' => self::TEST_USER_ID])]);
 
@@ -81,7 +84,7 @@ class UserControllerTest extends ApiTestCase
 
     public function testEnableUser(): void
     {
-        $this->reloadDatabase();
+        $this->prepareDatabaseData();
 
         static::createClient()->request('PATCH', '/user/enable', ['body' => json_encode(['id' => self::TEST_USER_ID])]);
 
@@ -92,7 +95,7 @@ class UserControllerTest extends ApiTestCase
 
     public function testRemoveUser(): void
     {
-        $this->reloadDatabase();
+        $this->prepareDatabaseData();
 
         static::createClient()->request('DELETE', '/user/remove/' . self::TEST_USER_ID);
 
@@ -110,15 +113,30 @@ class UserControllerTest extends ApiTestCase
         $this->assertResponseIsSuccessful();
 
         $this->assertJsonEquals(['message' => 'Successfully created the new user!']);
+
+        $this->reloadDatabase();
+    }
+
+    private function prepareDatabaseData(): void
+    {
+        $this->reloadDatabase();
+
+        $user = new User();
+        $user->setFirstName($this->user['firstName']);
+        $user->setLastName($this->user['lastName']);
+        $user->setEmail($this->user['email']);
+        $user->setPassword($this->user['password']);
+
+        $user->enable();
+        $user->setCreated();
+        $user->setUpdated();
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
     }
 
     private function reloadDatabase(): void
     {
-        $user = $this->user;
-        $user['created'] = (new \DateTimeImmutable())->format('Y-m-d H:m:s');
-        $user['updated'] = (new DateTime())->format('Y-m-d H:m:s');
-
         $this->connection->executeQuery('TRUNCATE TABLE ' . $this->tableName);
-        $this->connection->executeStatement('INSERT INTO ' . $this->tableName . '(id, first_name, last_name, email, password, enabled, created, updated) VALUES (:id, :firstName, :lastName, :email, :password, :enabled, :created, :updated)', $user);
     }
 }
