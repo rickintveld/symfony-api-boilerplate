@@ -7,7 +7,7 @@ use App\Enum\State;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class UserRepository extends ServiceEntityRepository
+class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -24,21 +24,21 @@ class UserRepository extends ServiceEntityRepository
         return $this->getEntityManager()->find(User::class, $id);
     }
 
-    public function update($entity): void
+    public function update(User $user): void
     {
-        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
     }
 
-    public function store($entity): void
+    public function store(User $user): void
     {
-        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
     }
 
-    public function remove($entity): void
+    public function remove(User $user): void
     {
-        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->remove($user);
         $this->getEntityManager()->flush();
     }
 }

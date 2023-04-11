@@ -3,14 +3,14 @@
 namespace App\RequestHandler;
 
 use App\Model\Identifier;
-use App\Repository\UserRepository;
+use App\Repository\UserRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class DisableUserRequestHandler implements RequestHandlerInterface
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private readonly UserRepositoryInterface $userRepository,
         private readonly SerializerInterface $objectSerializer
     ) {
     }
