@@ -47,9 +47,9 @@ abstract class DatabaseHelperTestCase extends ApiTestCase
         unset($this->connection, $this->entityManager, $this->tableName);
     }
 
-    public abstract function prepareDatabaseData(): void;
+    abstract public function prepareDatabaseData(): void;
 
-    public abstract function setClassName(): void;
+    abstract public function setClassName(): void;
 
     protected function reloadDatabase(): void
     {

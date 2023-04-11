@@ -74,7 +74,11 @@ class UserControllerTest extends DatabaseHelperTestCase
 
     public function testDisableUser(): void
     {
-        static::createClient()->request('PATCH', '/user/disable', ['body' => json_encode(['id' => self::TEST_USER_ID])]);
+        static::createClient()->request(
+            'PATCH',
+            '/user/disable',
+            ['body' => json_encode(['id' => self::TEST_USER_ID])]
+        );
 
         $this->assertResponseIsSuccessful();
 
@@ -83,7 +87,11 @@ class UserControllerTest extends DatabaseHelperTestCase
 
     public function testEnableUser(): void
     {
-        static::createClient()->request('PATCH', '/user/enable', ['body' => json_encode(['id' => self::TEST_USER_ID])]);
+        static::createClient()->request(
+            'PATCH',
+            '/user/enable',
+            ['body' => json_encode(['id' => self::TEST_USER_ID])]
+        );
 
         $this->assertResponseIsSuccessful();
 

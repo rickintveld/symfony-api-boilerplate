@@ -19,7 +19,7 @@ class UserController extends AbstractController
     public function all(SerializerInterface $objectSerializer, UserService $userService): JsonResponse
     {
         return $this->json([
-            'users' => $objectSerializer->serialize($userService->findAll(), 'json', ['presentation'])
+            'users' => $objectSerializer->serialize($userService->findAll(), 'json', ['groups' => 'presentation'])
         ], Response::HTTP_OK);
     }
 
@@ -27,10 +27,17 @@ class UserController extends AbstractController
     public function fetch(User $user, SerializerInterface $objectSerializer): JsonResponse
     {
         if (false === $user->isEnabled()) {
-            return $this->json(['error' => sprintf('%s #%d is disabled', $user->fullName(), $user->getId())], Response::HTTP_BAD_REQUEST);
+            return $this->json(['error' => sprintf('%s is disabled', $user->fullName())], Response::HTTP_BAD_REQUEST);
         }
 
-        return $this->json(['user' => $objectSerializer->serialize($user, 'json', ['presentation'])], Response::HTTP_OK);
+        return $this->json(
+            ['user' => $objectSerializer->serialize(
+                $user,
+                'json',
+                ['groups' => 'presentation']
+            )],
+            Response::HTTP_OK
+        );
     }
 
     #[Route('/user/disable', name: 'app_user_disable', methods: 'PATCH')]
