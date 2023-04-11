@@ -2,17 +2,10 @@
 
 namespace App\Tests\Functional\Controller;
 
-use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\DBAL\Connection;
 
-class UserControllerTest extends ApiTestCase
+class UserControllerTest extends DatabaseHelperTestCase
 {
-    private Connection $connection;
-    private EntityManagerInterface $entityManager;
-    private string $tableName;
-
     private const TEST_USER_ID = 1;
 
     private array $user = [
@@ -27,22 +20,34 @@ class UserControllerTest extends ApiTestCase
     public function setUp(): void
     {
         parent::setUp();
-
-        /** @var EntityManagerInterface $entityManager */
-        $this->entityManager = $this->getContainer()->get(EntityManagerInterface::class);
-        $this->tableName = $this->entityManager->getClassMetadata(User::class)->getTableName();
-        $this->connection = $this->entityManager->getConnection();
-
-        $this->prepareDatabaseData();
     }
 
     public function tearDown(): void
     {
         parent::tearDown();
 
-        $this->reloadDatabase();
-        $this->connection->close();
-        unset($this->connection, $this->entityManager, $this->tableName);
+        unset($this->className);
+    }
+
+    public function setClassName(): void
+    {
+        $this->className = User::class;
+    }
+
+    public function prepareDatabaseData(): void
+    {
+        $user = new User();
+        $user->setFirstName($this->user['firstName']);
+        $user->setLastName($this->user['lastName']);
+        $user->setEmail($this->user['email']);
+        $user->setPassword($this->user['password']);
+
+        $user->enable();
+        $user->setCreated();
+        $user->setUpdated();
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
     }
 
     public function testFetchAllUsers(): void
@@ -103,28 +108,5 @@ class UserControllerTest extends ApiTestCase
         $this->assertResponseIsSuccessful();
 
         $this->assertJsonEquals(['message' => 'Successfully created the new user!']);
-    }
-
-    private function prepareDatabaseData(): void
-    {
-        $this->reloadDatabase();
-
-        $user = new User();
-        $user->setFirstName($this->user['firstName']);
-        $user->setLastName($this->user['lastName']);
-        $user->setEmail($this->user['email']);
-        $user->setPassword($this->user['password']);
-
-        $user->enable();
-        $user->setCreated();
-        $user->setUpdated();
-
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-    }
-
-    private function reloadDatabase(): void
-    {
-        $this->connection->executeQuery('TRUNCATE TABLE ' . $this->tableName);
     }
 }
