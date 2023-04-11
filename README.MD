@@ -65,12 +65,6 @@ docker-compose run php-fpm bin/console --env=test doctrine:database:create
 docker-compose run php-fpm bin/console --env=test doctrine:schema:create
 ```
 
-### Insert Fixtures
-
-```bash
-docker-compose run php-fpm bin/console --env=test doctrine:fixtures:load
-```
-
 ### Run tests
 
 ```bash
