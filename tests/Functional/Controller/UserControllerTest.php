@@ -2,13 +2,10 @@
 
 namespace App\Tests\Functional\Controller;
 
-use DateTime;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\User;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Query\QueryBuilder;
 
 class UserControllerTest extends ApiTestCase
 {
@@ -35,20 +32,21 @@ class UserControllerTest extends ApiTestCase
         $this->entityManager = $this->getContainer()->get(EntityManagerInterface::class);
         $this->tableName = $this->entityManager->getClassMetadata(User::class)->getTableName();
         $this->connection = $this->entityManager->getConnection();
+
+        $this->prepareDatabaseData();
     }
 
     public function tearDown(): void
     {
         parent::tearDown();
 
+        $this->reloadDatabase();
         $this->connection->close();
         unset($this->connection, $this->entityManager, $this->tableName);
     }
 
     public function testFetchAllUsers(): void
     {
-        $this->prepareDatabaseData();
-
         static::createClient()->request('GET', '/user/all');
 
         $users = json_encode([$this->user]);
@@ -60,8 +58,6 @@ class UserControllerTest extends ApiTestCase
 
     public function testFetchOneUser(): void
     {
-        $this->prepareDatabaseData();
-
         static::createClient()->request('GET', '/user/' . self::TEST_USER_ID);
 
         $user = json_encode($this->user);
@@ -73,8 +69,6 @@ class UserControllerTest extends ApiTestCase
 
     public function testDisableUser(): void
     {
-        $this->prepareDatabaseData();
-
         static::createClient()->request('PATCH', '/user/disable', ['body' => json_encode(['id' => self::TEST_USER_ID])]);
 
         $this->assertResponseIsSuccessful();
@@ -84,8 +78,6 @@ class UserControllerTest extends ApiTestCase
 
     public function testEnableUser(): void
     {
-        $this->prepareDatabaseData();
-
         static::createClient()->request('PATCH', '/user/enable', ['body' => json_encode(['id' => self::TEST_USER_ID])]);
 
         $this->assertResponseIsSuccessful();
@@ -95,8 +87,6 @@ class UserControllerTest extends ApiTestCase
 
     public function testRemoveUser(): void
     {
-        $this->prepareDatabaseData();
-
         static::createClient()->request('DELETE', '/user/remove/' . self::TEST_USER_ID);
 
         $this->assertResponseIsSuccessful();
@@ -113,8 +103,6 @@ class UserControllerTest extends ApiTestCase
         $this->assertResponseIsSuccessful();
 
         $this->assertJsonEquals(['message' => 'Successfully created the new user!']);
-
-        $this->reloadDatabase();
     }
 
     private function prepareDatabaseData(): void
