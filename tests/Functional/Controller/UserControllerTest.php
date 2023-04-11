@@ -53,7 +53,7 @@ class UserControllerTest extends ApiTestCase
 
         $this->assertResponseIsSuccessful();
 
-        $this->assertJsonContains(['users' => $users], false);
+        $this->assertJsonContains(['users' => $users]);
     }
 
     public function testFetchOneUser(): void
@@ -64,7 +64,7 @@ class UserControllerTest extends ApiTestCase
 
         $this->assertResponseIsSuccessful();
 
-        $this->assertJsonContains(['user' => $user], false);
+        $this->assertJsonContains(['user' => $user]);
     }
 
     public function testDisableUser(): void
