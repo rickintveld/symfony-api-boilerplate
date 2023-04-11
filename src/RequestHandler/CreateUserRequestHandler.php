@@ -20,7 +20,6 @@ class CreateUserRequestHandler implements RequestHandlerInterface
     {
         $user = $this->objectSerializer->deserialize($request->getContent(), User::class, 'json');
 
-        $user->disable();
         $user->setCreated();
         $user->setUpdated();
 
